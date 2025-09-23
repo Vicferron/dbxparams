@@ -1,0 +1,26 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Pytest cache
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# Jupyter / Databricks
+.ipynb_checkpoints/
