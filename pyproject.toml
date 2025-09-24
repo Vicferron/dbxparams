@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dbxparams"
-version = "0.1.4"
+version = "0.1.5"
 description = "Manage Databricks notebook parameters as Python classes"
 authors = [
   { name="Víctor [Tu Apellido]", email="tuemail@example.com" }
