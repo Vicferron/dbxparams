@@ -1,10 +1,9 @@
 from typing import Any, Dict, get_type_hints
 from .errors import MissingParameterError, InvalidTypeError
+from .types import cast_value
 
 
 class NotebookParams:
-
-
     def __init__(self, dbutils: Any = None, defaults: Dict[str, Any] = None):
         """
         Initialize parameters.
@@ -26,7 +25,9 @@ class NotebookParams:
             if self._dbutils:
                 try:
                     # Create widget if it does not exist
-                    self._dbutils.widgets.text(name, str(default) if default is not None else "")
+                    self._dbutils.widgets.text(
+                        name, str(default) if default is not None else ""
+                    )
                 except Exception:
                     # Ignore if widget already exists
                     pass
@@ -58,12 +59,12 @@ class NotebookParams:
         if val is None and default is not None:
             val = default
 
-        # 4. Error if still None
-        if val is None:
+        # 4. Error if still None or empty string
+        if val is None or (isinstance(val, str) and val.strip() == ""):
             raise MissingParameterError(name)
 
         # 5. Validate type if hint provided
         try:
-            return type_hint(val) if type_hint else val
+            return cast_value(val, type_hint) if type_hint else val
         except Exception:
             raise InvalidTypeError(name, type_hint, val)
