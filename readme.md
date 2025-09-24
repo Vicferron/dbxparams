@@ -1,100 +1,71 @@
 # dbxparams
 
-A lightweight library to manage **Databricks notebook parameters** as Python classes.
-Stop repeating `dbutils.widgets` code in every notebook — define your parameters once as a class, and let dbxparams handle the rest.
+[![PyPI version](https://badge.fury.io/py/dbxparams.svg)](https://pypi.org/project/dbxparams/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/dbxparams.svg)](https://pypi.org/project/dbxparams/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A lightweight library for managing **Databricks notebook parameters** with type safety, defaults, and automatic widget creation.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-* Define parameters as **Python classes** with type annotations.
-* Automatically **create and read widgets** from `dbutils`.
-* Support for **required and optional parameters** (with defaults).
-* Simple **type validation** (`str`, `int`, `float`, `bool`, `date`, `datetime`).
-* Clear and **verbose error messages**.
-* **Debug mode** with fallback `defaults` dictionary for local runs.
+- Auto-create and populate **Databricks widgets**
+- Type-safe parameter casting (`int`, `float`, `bool`, `date`, `datetime`)
+- Support for **defaults dict** and class defaults
+- Custom error handling: `MissingParameterError`, `InvalidTypeError`
+- Cleaner, more maintainable notebooks (no more repetitive `dbutils.widgets.get`!)
 
 ---
 
 ## 📦 Installation
 
-```
+```bash
 pip install dbxparams
 ```
 
 ---
 
-## 📝 Usage
-
-### 1. Define your parameter class
+## 🚀 Quick Start
 
 ```python
 from dbxparams import NotebookParams
 
-class SalesParams(NotebookParams):
-    market: str             # required
-    env: str = "dev"        # optional with default
-    retries: int = 3        # optional with default
-```
+class MyParams(NotebookParams):
+    market: str              # required
+    env: str = "dev"         # optional with default
+    retries: int = 3         # optional with default
 
-### 2. Use it inside your notebook
+# Pass dbutils to auto-create widgets and populate values
+params = MyParams(dbutils)
 
-```python
-params = SalesParams(dbutils)
-
-print(params.market)   # value from widget or defaults
-print(params.env)      # "dev" (default)
-print(params.retries)  # 3 (default)
-```
-
-### 3. Debug locally (without Databricks)
-
-```python
-params = SalesParams(None, defaults={"market": "FR"})
-print(params.market)  # "FR"
+print(params.market)   # Read from widget
+print(params.env)      # Uses default "dev" if not set
+print(params.retries)  # Uses default 3
 ```
 
 ---
 
-## ⚠️ Errors & Validations
+## 🔒 Error Handling
 
-* **MissingParameterError**
-  Raised if a required parameter is not defined anywhere.
-
-* **InvalidTypeError**
-  Raised if the value cannot be cast to the expected type.
-
-* **ValidationError**
-  Reserved for custom validations (e.g., regex, ranges).
+- **MissingParameterError** → Raised when a required parameter is missing
+- **InvalidTypeError** → Raised when a value cannot be cast to the expected type
 
 Example:
+```python
+class TypedParams(NotebookParams):
+    threshold: float
+    active: bool
 
+# If "threshold" widget is "not-a-float" → InvalidTypeError
 ```
-[InvalidTypeError] Parameter 'threshold' expected type float
-but received value 'abc' (type str).
-💡 Ensure the widget/default matches the declared type.
-```
 
 ---
 
-## 📚 Roadmap
 
-* Load parameters from **JSON/YAML configs**.
-* Extended type support (lists, enums, regex validations).
-* Better integration with Databricks Jobs parameters.
+## 📜 License
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-Open an issue or submit a pull request on GitHub.
-
----
-
-## 📄 License
-
-MIT License. See LICENSE for details.
+This project is licensed under the [MIT License](LICENSE).
 
 Copyright (c) 2025 Víctor Ferrón Álvarez
 https://vicferron.github.io/
