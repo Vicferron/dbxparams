@@ -1,4 +1,4 @@
-name: Test and Publish to TestPyPI
+name: Publish to PyPI
 
 on:
   push:
@@ -31,5 +31,4 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          python -m twine upload --repository-url https://pypi.org/legacy/ dist/*
+        run: python -m twine upload dist/*
