@@ -24,3 +24,6 @@ dist/
 
 # Jupyter / Databricks
 .ipynb_checkpoints/
+
+# tools
+bump_version.sh
